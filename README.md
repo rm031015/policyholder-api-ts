@@ -41,8 +41,8 @@ npm start
 | Column Name | Data Type | Description |
 | --- | --- | --- |
 | policyholder_id | TEXT | 保戶的唯一識別碼 |
-| name | VARCHAR | 保戶姓名 |
-| registration_date | DATE | 註冊日期 |
+| name | TEXT | 保戶姓名 |
+| registration_date | timestamp | 註冊日期 |
 
 ### **Introductions**
 
