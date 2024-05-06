@@ -60,7 +60,7 @@ npm start
 
 依據資料關聯前端畫面如下：
 
-![Untitled](./)
+![Untitled](./chart.png)
 
 # API 實作
 
