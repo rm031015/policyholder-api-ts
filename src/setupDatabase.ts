@@ -8,7 +8,7 @@ async function setupDatabase(): Promise<void> {
     CREATE TABLE IF NOT EXISTS Policyholders (
       policyholder_id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
-      registration_date TEXT NOT NULL
+      registration_date TIMESTAMP NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS Introductions (
