@@ -40,7 +40,7 @@ npm start
 
 | Column Name | Data Type | Description |
 | --- | --- | --- |
-| policyholder_id | INT | 保戶的唯一識別碼 |
+| policyholder_id | TEXT | 保戶的唯一識別碼 |
 | name | VARCHAR | 保戶姓名 |
 | registration_date | DATE | 註冊日期 |
 
@@ -48,8 +48,8 @@ npm start
 
 | Column Name | Data Type | Description |
 | --- | --- | --- |
-| introducer_id | INT | 介紹人的保戶識別碼 |
-| introduced_id | INT | 被介紹人的保戶識別碼 |
+| introducer_id | TEXT | 介紹人的保戶識別碼 |
+| introduced_id | TEXT | 被介紹人的保戶識別碼 |
 | introduction_type | CHAR(1) | 介紹類型（'D' 直接, 'I' 間接） |
 | relationship | CHAR(1) | 介紹方向（'L' 左, 'R' 右） |
 
