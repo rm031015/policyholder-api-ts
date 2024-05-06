@@ -28,7 +28,7 @@ app.get('/api/policyholders', async (req, res) => {
 
   try {
     const db = await openDb();
-    const policyholder = await db.get<Policyholder | undefined>('SELECT * FROM Policyholders WHERE policyholder_id = ?', [code]);
+    const policyholder = await db.get<Policyholder | undefined>('SELECT p.*, i.* FROM Introductions i RIGHT JOIN Policyholders p ON i.introduced_id = p.policyholder_id WHERE p.policyholder_id = ?', [code]);
 
     if (!policyholder) {
       return res.status(404).json({ error: 'Policyholder not found' });
@@ -42,7 +42,7 @@ app.get('/api/policyholders', async (req, res) => {
         code: policyholder.policyholder_id,
         name: policyholder.name,
         registration_date: policyholder.registration_date,
-        introducer_code: policyholder.policyholder_id,  
+        introducer_code: policyholder.introducer_id,  
          l,
          r
       });
@@ -59,16 +59,22 @@ app.get('/api/policyholders/:code/top', async (req, res) => {
   try {
     // Fetch the introducer (upper-level policyholder)
       const introducer = await db.get(`
-        SELECT p.* FROM Policyholders p
-        JOIN Introductions i ON p.policyholder_id = i.introducer_id
+        SELECT p.*, i.* FROM Policyholders p
+        RIGHT JOIN Introductions i ON p.policyholder_id = i.introducer_id
         WHERE i.introduced_id = ?
       `, [code]);
+     
 
       if (!introducer) {
         res.status(404).json({ error: "Introducer not found" });
         return;
       }
-     const id:string = introducer.policyholder_id
+     const id: string = introducer.policyholder_id
+     const policyholder = await db.get<Policyholder | undefined>('SELECT p.*, i.* FROM Introductions i RIGHT JOIN Policyholders p ON i.introduced_id = p.policyholder_id WHERE p.policyholder_id = ?', [id]);
+           if (!policyholder) {
+        res.status(404).json({ error: "Introducer not found" });
+        return;
+      }
 
       // Fetch the left and right trees for the introducer
       const l = await getTree(db, id, 'L');
@@ -78,7 +84,7 @@ app.get('/api/policyholders/:code/top', async (req, res) => {
         code: introducer.policyholder_id,
         name: introducer.name,
         registration_date: introducer.registration_date,
-        introducer_code: introducer.policyholder_id, 
+        introducer_code: policyholder.introducer_id, 
         l,
         r
       });
